@@ -1,6 +1,6 @@
 package course.concurrency.m3_shared.threadLocal;
 
-public class TL_example1 {
+public final class TL_example1 implements Test {
 
     public static class Task implements Runnable {
         private static final ThreadLocal<Integer> value = ThreadLocal.withInitial(() -> 0);

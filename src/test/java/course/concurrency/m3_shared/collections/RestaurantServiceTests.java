@@ -34,6 +34,7 @@ public class RestaurantServiceTests {
 
     @RepeatedTest(TEST_COUNT)
     public void test() throws InterruptedException {
+        executor = Executors.newFixedThreadPool(poolSize);
         CountDownLatch latch = new CountDownLatch(1);
 
         for (int i = 0; i < poolSize; i++) {
@@ -42,18 +43,16 @@ public class RestaurantServiceTests {
                     latch.await();
                 } catch (InterruptedException ignored) {}
 
-                for (int it = 0; it < iterations; it++) {
-                    service.getByName("A");
-                    service.getByName("B");
-                    service.getByName("C");
-                }
+                // TODO your impl
             });
         }
 
-        long start = System.currentTimeMillis();
         latch.countDown();
         executor.shutdown();
         executor.awaitTermination(30, TimeUnit.SECONDS);
+
+        long start = System.currentTimeMillis();
+        latch.countDown();
         long end = System.currentTimeMillis();
 
         Set<String> statResult = service.printStat();
